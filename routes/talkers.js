@@ -1,22 +1,19 @@
 const express = require('express');
 const fs = require('fs');
+const { validadeToken, validadeName, validadeAge, validadeTalk } = require('../middlewares/index');
 
 const routes = express.Router();
-
-const validadeToken = require('../middlewares/validadeToken');
-const validadeName = require('../middlewares/validadeName');
-const validadeAge = require('../middlewares/validadeAge');
-const validadeTalk = require('../middlewares/validadeTalk');
+const fileName = 'talker.json';
 
 routes.get('/', (_req, res) => {
-  const file = fs.readFileSync('talker.json');
+  const file = fs.readFileSync(fileName);
   const talkers = JSON.parse(file);
   res.status(200).json(talkers);
 });
 
 routes.get('/:id', (req, res) => {
   const { id } = req.params;
-  const file = fs.readFileSync('talker.json');
+  const file = fs.readFileSync(fileName);
   const talkers = JSON.parse(file);
 
   const result = talkers.find((talker) => talker.id === Number(id));
@@ -29,7 +26,7 @@ routes.use(validadeToken);
 
 routes.post('/', validadeName, validadeAge, validadeTalk, (req, res) => {
   const { name, age, talk } = req.body;
-  const file = fs.readFileSync('talker.json');
+  const file = fs.readFileSync(fileName);
   const talkers = JSON.parse(file);
   const newTalkers = [];
   const lastPosition = talkers.length;
@@ -43,7 +40,36 @@ routes.post('/', validadeName, validadeAge, validadeTalk, (req, res) => {
   };
   newTalkers.push(obj);
   const objTalker = JSON.stringify(newTalkers);
-  fs.writeFileSync('talker.json', objTalker);
+  fs.writeFileSync(fileName, objTalker);
   return res.status(201).json(obj);
+});
+
+routes.put('/:id', validadeName, validadeAge, validadeTalk, (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+
+  const file = fs.readFileSync(fileName);
+  const talkers = JSON.parse(file);
+  const person = talkers.findIndex((index) => index.id === Number(id));
+
+  if (person === -1) return res.status(404).json({ message: 'Talker not found' });
+  const idContinue = talkers[person].id;
+  talkers[person] = { id: idContinue, name, age, talk };
+
+  const objTalker = JSON.stringify(talkers);
+  fs.writeFileSync(fileName, objTalker);
+  res.status(200).json(talkers[person]);
+});
+
+routes.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const file = fs.readFileSync(fileName);
+  const talkers = JSON.parse(file);
+  const person = talkers.findIndex((index) => index.id === Number(id));
+
+  const resp = talkers.splice(person, 1);
+  console.log(resp);
+  console.log('full arr', talkers);
+  res.status(204).end();
 });
 module.exports = routes;

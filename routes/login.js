@@ -1,7 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const verifyEmail = require('../middlewares/verifyEmail');
-const verifyPassword = require('../middlewares/verifyPassword');
+const { verifyEmail, verifyPassword } = require('../middlewares/index');
 
 const rotas = express.Router();
 
