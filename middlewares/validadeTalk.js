@@ -16,14 +16,13 @@ const validadeDate = (arr) => {
 };
 
 const validadewatchedAt = (talk, res) => {
-  console.log('data', talk.watchedAt);
   if (talk.watchedAt === undefined) {
     return res.status(400).json({ message: 
       'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
 
   const arrFormat = talk.watchedAt.split('/');
-  if (validadeDate(arrFormat) === false) {
+  if (arrFormat.length < 3 || validadeDate(arrFormat) === false) {
     return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
 };
@@ -33,7 +32,6 @@ const validadeRate = (talk, res) => {
     return res.status(400).json({ message: 
       'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
-  console.log(Number(talk.rate) < 1);
   if (Number(talk.rate) < 1 || Number(talk.rate) > 5) {
     return res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }

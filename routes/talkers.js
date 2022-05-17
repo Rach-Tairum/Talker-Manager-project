@@ -26,23 +26,24 @@ routes.get('/:id', (req, res) => {
 });
 
 routes.use(validadeToken);
-routes.use(validadeName);
-routes.use(validadeAge);
-routes.use(validadeTalk);
-routes.post('/', (req, res) => {
+
+routes.post('/', validadeName, validadeAge, validadeTalk, (req, res) => {
   const { name, age, talk } = req.body;
   const file = fs.readFileSync('talker.json');
   const talkers = JSON.parse(file);
+  const newTalkers = [];
   const lastPosition = talkers.length;
   const idNew = lastPosition + 1;
 
-  const objTalker = {
+  const obj = {
     id: idNew,
     name,
     age,
     talk,
   };
-  talkers.push(objTalker);
-  return res.status(201).json(objTalker);
+  newTalkers.push(obj);
+  const objTalker = JSON.stringify(newTalkers);
+  fs.writeFileSync('talker.json', objTalker);
+  return res.status(201).json(obj);
 });
 module.exports = routes;
