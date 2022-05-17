@@ -67,9 +67,10 @@ routes.delete('/:id', (req, res) => {
   const talkers = JSON.parse(file);
   const person = talkers.findIndex((index) => index.id === Number(id));
 
-  const resp = talkers.splice(person, 1);
-  console.log(resp);
-  console.log('full arr', talkers);
+  talkers.splice(person, 1);
+  
+  const objTalker = JSON.stringify(talkers);
+  fs.writeFileSync(fileName, objTalker);
   res.status(204).end();
 });
 module.exports = routes;
