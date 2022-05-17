@@ -11,6 +11,18 @@ routes.get('/', (_req, res) => {
   res.status(200).json(talkers);
 });
 
+routes.get('/search', validadeToken, (req, res) => {
+  const { q } = req.query;
+  const file = fs.readFileSync(fileName);
+  const talkers = JSON.parse(file);
+
+  if (q === '' || q === undefined) return res.status(200).json(talkers);
+
+  const arrFiltered = talkers.filter((talker) => talker.name.includes(q));
+
+  res.status(200).json(arrFiltered);
+});
+
 routes.get('/:id', (req, res) => {
   const { id } = req.params;
   const file = fs.readFileSync(fileName);
@@ -28,7 +40,7 @@ routes.post('/', validadeName, validadeAge, validadeTalk, (req, res) => {
   const { name, age, talk } = req.body;
   const file = fs.readFileSync(fileName);
   const talkers = JSON.parse(file);
-  const newTalkers = [];
+  
   const lastPosition = talkers.length;
   const idNew = lastPosition + 1;
 
@@ -38,8 +50,8 @@ routes.post('/', validadeName, validadeAge, validadeTalk, (req, res) => {
     age,
     talk,
   };
-  newTalkers.push(obj);
-  const objTalker = JSON.stringify(newTalkers);
+  talkers.push(obj);
+  const objTalker = JSON.stringify(talkers);
   fs.writeFileSync(fileName, objTalker);
   return res.status(201).json(obj);
 });
