@@ -1,12 +1,13 @@
 const verifyEmail = (req, _res, next) => {
-  const { email } = req.body;
-  if (!email) {
+  const { email } = req.body; // busca o email no body da requisição
+  if (!email) { // verifica se o email foi passado
     const errorObj = { status: 400, message: 'O campo "email" é obrigatório' };
     throw errorObj;
   }
-    const verify = email.split('');
-    const verify2 = email.split('.');
-  
+    const verify = email.split(''); // separa letra por letra do email passado
+    const verify2 = email.split('.'); // separa a partir do .
+
+    // verifica se o email contem @algo.com, ou seja, é um email válido
     if (verify.includes('@') && verify.includes('.') && verify2.includes('com')) {
       return next();
     } 
