@@ -1,6 +1,7 @@
 const verifyEmail = (req, _res, next) => {
   const { email } = req.body; // busca o email no body da requisição
   if (!email) { // verifica se o email foi passado
+    // objeto de erro capturado pelo error handler. 400 = Bad Request
     const errorObj = { status: 400, message: 'O campo "email" é obrigatório' };
     throw errorObj;
   }
@@ -11,6 +12,8 @@ const verifyEmail = (req, _res, next) => {
     if (verify.includes('@') && verify.includes('.') && verify2.includes('com')) {
       return next();
     } 
+
+    // objeto de erro capturado pelo error handler. 400 = Bad Request
     const errorObj = { status: 400, message: 'O "email" deve ter o formato "email@email.com"' };
     throw errorObj;
 };

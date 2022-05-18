@@ -3,6 +3,7 @@ const validadeToken = (req, _res, next) => {
   const allHeaders = Object.keys(req.headers); // busca as chaves de headers
 
   if (!allHeaders.includes('authorization')) { // verifica se a autorização foi passada, ou seja, se a chave authorization existe
+    // objeto de erro capturado pelo error handler. 401 = Unauthorized
     const errorObj = { status: 401, message: 'Token não encontrado' };
     throw errorObj;
   }
@@ -11,6 +12,8 @@ const validadeToken = (req, _res, next) => {
   if (authorization !== '' && authorization !== undefined && authorization.length === 16) {
     return next();
   }
+  
+  // objeto de erro capturado pelo error handler. 401 = Unauthorized
   const errorObj = { status: 401, message: 'Token inválido' };
   throw errorObj;
 };
