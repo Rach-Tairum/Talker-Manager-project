@@ -10,7 +10,7 @@ const rotas = express.Router(); // estbelece que irá utilizar rotas
 rotas.post('/', verifyEmail, verifyPassword, (_req, res) => {
   const token = crypto.randomBytes(8).toString('hex');
 
-  return res.status(200).json({ token });
+  return res.status(200).json({ token }); // 200 = Ok
 });
 
 module.exports = rotas;
