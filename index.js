@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { talkers, login } = require('./routes/index');
-const { errorHandler } = require('./middlewares/index');
+const { talkers, login } = require('./routes/index'); // importa rotas de login e talkers
+const { errorHandler } = require('./middlewares/index'); // importa middleware que lida e apresenta os erros 
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,11 +14,11 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.use('/talker', talkers);
+app.use('/talker', talkers); // rota dos palestrantes
 
-app.use('/login', login);
+app.use('/login', login); // rota de login do usuário
 
-app.use(errorHandler);
+app.use(errorHandler); // middleware de erro
 
 app.listen(PORT, () => {
   console.log('Online');
