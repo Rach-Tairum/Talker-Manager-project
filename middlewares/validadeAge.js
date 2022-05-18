@@ -1,13 +1,16 @@
-const validadeAge = (req, res, next) => {
+const validadeAge = (req, _res, next) => {
   const { age } = req.body;
 
   if (!age || age === '' || Number.isInteger(age) === false) {
-    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+    const errorObj = { status: 400, message: 'O campo "age" é obrigatório' };
+    throw errorObj;
   }
+
   if (Number(age) >= 18) {
     return next();
   }
-  return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
+  const errorObj = { status: 400, message: 'A pessoa palestrante deve ser maior de idade' };
+  throw errorObj;
 };
 
 module.exports = validadeAge;

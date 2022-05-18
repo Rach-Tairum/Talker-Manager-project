@@ -1,7 +1,8 @@
-const verifyEmail = (req, res, next) => {
+const verifyEmail = (req, _res, next) => {
   const { email } = req.body;
   if (!email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
+    const errorObj = { status: 400, message: 'O campo "email" é obrigatório' };
+    throw errorObj;
   }
     const verify = email.split('');
     const verify2 = email.split('.');
@@ -9,7 +10,8 @@ const verifyEmail = (req, res, next) => {
     if (verify.includes('@') && verify.includes('.') && verify2.includes('com')) {
       return next();
     } 
-      return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+    const errorObj = { status: 400, message: 'O "email" deve ter o formato "email@email.com"' };
+    throw errorObj;
 };
 
 module.exports = verifyEmail;

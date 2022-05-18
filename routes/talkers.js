@@ -31,7 +31,8 @@ routes.get('/:id', (req, res) => {
   const result = talkers.find((talker) => talker.id === Number(id));
   if (result) return res.status(200).json(result);
 
-  res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  const errorObj = { status: 404, message: 'Pessoa palestrante não encontrada' };
+  throw errorObj;
 });
 
 routes.use(validadeToken);
@@ -64,7 +65,9 @@ routes.put('/:id', validadeName, validadeAge, validadeTalk, (req, res) => {
   const talkers = JSON.parse(file);
   const person = talkers.findIndex((index) => index.id === Number(id));
 
-  if (person === -1) return res.status(404).json({ message: 'Talker not found' });
+  const errorObj = { status: 404, message: 'Talker not found' };
+  if (person === -1) throw errorObj;
+
   const idContinue = talkers[person].id;
   talkers[person] = { id: idContinue, name, age, talk };
 

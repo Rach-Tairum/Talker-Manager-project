@@ -1,13 +1,15 @@
-const verifyPassword = (req, res, next) => {
+const verifyPassword = (req, _res, next) => {
   const { password } = req.body;
   if (!password) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
+    const errorObj = { status: 400, message: 'O campo "password" é obrigatório' };
+    throw errorObj;
   }
     
     if (password.length >= 6) {
       return next();
     } 
-      return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+    const errorObj = { status: 400, message: 'O "password" deve ter pelo menos 6 caracteres' };
+    throw errorObj;
 };
 
 module.exports = verifyPassword;

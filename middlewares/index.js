@@ -4,6 +4,7 @@ const validadeToken = require('./validadeToken');
 const validadeName = require('./validadeName');
 const validadeAge = require('./validadeAge');
 const validadeTalk = require('./validadeTalk');
+const errorHandler = require('./errorHandler');
 
 module.exports = {
   verifyEmail,
@@ -12,4 +13,5 @@ module.exports = {
   validadeName,
   validadeAge,
   validadeTalk,
+  errorHandler,
 };

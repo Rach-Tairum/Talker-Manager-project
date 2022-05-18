@@ -1,16 +1,17 @@
-const validadeToken = (req, res, next) => {
+const validadeToken = (req, _res, next) => {
   const { authorization } = req.headers;
   const allHeaders = Object.keys(req.headers);
 
   if (!allHeaders.includes('authorization')) {
-    return res.status(401).json({ message: 'Token não encontrado' });
+    const errorObj = { status: 401, message: 'Token não encontrado' };
+    throw errorObj;
   }
 
   if (authorization !== '' && authorization !== undefined && authorization.length === 16) {
     return next();
   }
-  
-  return res.status(401).json({ message: 'Token inválido' });
+  const errorObj = { status: 401, message: 'Token inválido' };
+  throw errorObj;
 };
 
 module.exports = validadeToken;
